@@ -16,6 +16,7 @@ namespace FinApp.Infra.Data.Repositories
 
         public void BeginTransaction()
         {
+            ///implementarção
             throw new NotImplementedException();
         }
 

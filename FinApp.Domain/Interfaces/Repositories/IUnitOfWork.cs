@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FinApp.Domain.Interfaces.Repositories
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         #region Operações de transação
         void BeginTransaction();
