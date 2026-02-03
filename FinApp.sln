@@ -10,6 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens
 		.github\workflows\pipeline.yml = .github\workflows\pipeline.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinApp.Domain", "FinApp.Domain\FinApp.Domain.csproj", "{4F8A7F95-E6F7-4610-BB48-794525EA3233}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinApp.Infra.Data", "FinApp.Infra.Data\FinApp.Infra.Data.csproj", "{F91D2501-6A71-4DB6-BD1D-035F2C1093B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +24,14 @@ Global
 		{E421439F-D3FF-4B1F-92C8-ACAFF4C27329}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E421439F-D3FF-4B1F-92C8-ACAFF4C27329}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E421439F-D3FF-4B1F-92C8-ACAFF4C27329}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F8A7F95-E6F7-4610-BB48-794525EA3233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F8A7F95-E6F7-4610-BB48-794525EA3233}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F8A7F95-E6F7-4610-BB48-794525EA3233}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F8A7F95-E6F7-4610-BB48-794525EA3233}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F91D2501-6A71-4DB6-BD1D-035F2C1093B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F91D2501-6A71-4DB6-BD1D-035F2C1093B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F91D2501-6A71-4DB6-BD1D-035F2C1093B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F91D2501-6A71-4DB6-BD1D-035F2C1093B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

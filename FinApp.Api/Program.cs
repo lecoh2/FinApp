@@ -1,3 +1,4 @@
+using FinApp.Infra.Data.Extensions;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ builder.Services.AddOpenApi();
 //Swager
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//Método de extesão
+builder.Services.AddEntityFramework(builder.Configuration);
 
 var app = builder.Build();
 
