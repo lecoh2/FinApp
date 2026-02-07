@@ -1,5 +1,7 @@
 ﻿using FinApp.Domain.Interfaces.Repositories;
+using FinApp.Domain.Utils;
 using FinApp.Infra.Data.Contexts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,29 +20,53 @@ namespace FinApp.Infra.Data.Repositories
         //{
         //    _dataContext = dataContext;
         //}
-        public Task AddAsync(TEntity entity)
+        public virtual async Task AddAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            await dataContext.AddAsync(entity);
+            await dataContext.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(TEntity entity)
+        public virtual async Task DeleteAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            dataContext.Remove(entity);
+            await dataContext.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<TEntity>> GetAllAsync()
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await dataContext.Set<TEntity>().ToListAsync();
+
         }
 
-        public Task<TEntity?> GetByIdAsync(TKey id)
+        public virtual async Task<PageResult<TEntity>> GetAllAync(int pageNumber, int pageSize)
         {
-            throw new NotImplementedException();
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0) pageSize = 10;
+
+            var query = dataContext.Set<TEntity>();
+            var totalCount = await query.CountAsync();
+            var items = await query
+                         .Skip((pageNumber - 1) * pageSize)
+                         .Take(pageSize)
+                         .ToListAsync();
+            return new PageResult<TEntity>
+            {
+                Items = items,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            };
         }
 
-        public Task UpdateAsync(TEntity entity)
+        public virtual async Task<TEntity?> GetByIdAsync(TKey id)
         {
-            throw new NotImplementedException();
+            return await dataContext.Set<TEntity>().FindAsync(id);
+        }
+
+        public virtual async Task UpdateAsync(TEntity entity)
+        {
+            dataContext.Update(entity);
+            await dataContext.SaveChangesAsync();
         }
     }
 }

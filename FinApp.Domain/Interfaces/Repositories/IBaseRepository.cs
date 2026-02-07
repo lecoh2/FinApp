@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FinApp.Domain.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,8 @@ namespace FinApp.Domain.Interfaces.Repositories
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(TEntity entity);
-
-        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<IEnumerable<TEntity>> GetAllAsync();       
+        Task<PageResult<TEntity>> GetAllAsync(int pageNumber, int pageSize);
         Task<TEntity?> GetByIdAsync(TKey id);
     }
 }

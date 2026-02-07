@@ -1,4 +1,6 @@
-﻿using FinApp.Infra.Data.Contexts;
+﻿using FinApp.Domain.Interfaces.Repositories;
+using FinApp.Infra.Data.Contexts;
+using FinApp.Infra.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,12 +20,17 @@ namespace FinApp.Infra.Data.Extensions
         /// </summary> 
 
 
-        public static IServiceCollection AddEntityFramework(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddEntityFramework
+            (this IServiceCollection services,
+            IConfiguration configuration)
         {
             //ler a connectionString do banco de dados111
             var connectionString = configuration.GetConnectionString("FinApp");
             //injetar as configurações da classe datacontext
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+
+            //Injeção de dependência do UnitOfWork 
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             return services;
         }
     }
