@@ -36,9 +36,8 @@ namespace FinApp.Infra.Data.Repositories
         {
             return await dataContext.Set<TEntity>().ToListAsync();
 
-        }
-
-        public virtual async Task<PageResult<TEntity>> GetAllAync(int pageNumber, int pageSize)
+        }   
+        public virtual async Task<PageResult<TEntity>> GetAllAsync(int pageNumber, int pageSize)
         {
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;

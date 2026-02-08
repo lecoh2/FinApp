@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9 d17.14
+VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinApp.Api", "FinApp.Api\FinApp.Api.csproj", "{E421439F-D3FF-4B1F-92C8-ACAFF4C27329}"
 EndProject
@@ -13,6 +13,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinApp.Domain", "FinApp.Domain\FinApp.Domain.csproj", "{4F8A7F95-E6F7-4610-BB48-794525EA3233}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinApp.Infra.Data", "FinApp.Infra.Data\FinApp.Infra.Data.csproj", "{F91D2501-6A71-4DB6-BD1D-035F2C1093B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinApp.Infra.Data.Tests", "FinApp.Infra.Data.Tests\FinApp.Infra.Data.Tests.csproj", "{D4145753-3AD2-4C51-A0EE-104014FCC6B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{F91D2501-6A71-4DB6-BD1D-035F2C1093B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F91D2501-6A71-4DB6-BD1D-035F2C1093B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F91D2501-6A71-4DB6-BD1D-035F2C1093B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4145753-3AD2-4C51-A0EE-104014FCC6B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4145753-3AD2-4C51-A0EE-104014FCC6B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4145753-3AD2-4C51-A0EE-104014FCC6B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4145753-3AD2-4C51-A0EE-104014FCC6B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
