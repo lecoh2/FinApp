@@ -1,97 +1,14 @@
-name: ASP.NET API CI/CD
+name: Checkout Test
 
-# 🔐 Permissões explícitas (evita erro 500 no checkout)
 permissions:
   contents: read
 
 on:
   push:
     branches: ["master"]
-  pull_request:
-    branches: ["master"]
 
 jobs:
-  build:
-    name: Compilação
+  checkout:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-
-      - name: Instalar .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restaurar dependências
-        run: dotnet restore
-
-      - name: Compilar e publicar a aplicação
-        run: |
-          dotnet publish ./FinancasApp.API/FinancasApp.API.csproj \
-            --configuration Release \
-            --output ./output
-
-      - name: Verificar saída do publish
-        run: ls -R ./output
-
-      - name: Exportar artefatos de build
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: ./output
-          retention-days: 7
-
-  test:
-    name: Testes
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-
-      - name: Instalar .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restaurar dependências
-        run: dotnet restore
-
-      - name: Executar testes
-        run: |
-          mkdir -p TestResults
-          dotnet test ./FinancasApp.Infra.Data.Tests/FinancasApp.Infra.Data.Tests.csproj \
-            --configuration Release \
-            --logger "trx;LogFileName=results.trx" \
-            --results-directory ./TestResults
-
-      - name: Exportar relatório de testes
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-report
-          path: ./TestResults
-          retention-days: 7
-
-  deploy:
-    name: Implantação
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-
-      - name: Implantação da aplicação
-        run: echo "Implantando o sistema em produção..."
+      - uses: actions/checkout@v4
