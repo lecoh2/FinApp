@@ -24,19 +24,20 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restaurar dependências
-        run: dotnet restore ./FinApp.API/FinApp.API.csproj
+        run: dotnet restore
 
       - name: Compilar e publicar a aplicação
-        run: |
-          dotnet publish ./FinApp.API/FinApp.API.csproj \
-            --configuration Release \
-            --output ./output
+        run: dotnet publish -c Release -o ./output
+
+      - name: Verificar saída do publish
+        run: ls -R ./output
 
       - name: Exportar artefatos de build
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: ./output
+          retention-days: 7
 
   test:
     name: Testes
@@ -53,19 +54,21 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restaurar dependências
-        run: dotnet restore ./FinApp.Infra.Data.Tests/FinApp.Infra.Data.Tests.csproj
+        run: dotnet restore
 
       - name: Executar testes
         run: |
-          dotnet test ./FinApp.Infra.Data.Tests/FinApp.Infra.Data.Tests.csproj \
-            --configuration Release \
-            --logger "trx;LogFileName=results.trx"
+          mkdir -p TestResults
+          dotnet test -c Release \
+            --logger "trx;LogFileName=results.trx" \
+            --results-directory ./TestResults
 
       - name: Exportar relatório de testes
         uses: actions/upload-artifact@v4
         with:
           name: test-report
           path: ./TestResults
+          retention-days: 7
 
   deploy:
     name: Implantação
