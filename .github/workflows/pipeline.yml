@@ -24,11 +24,11 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restaurar dependências
-        run: dotnet restore ./FinancasApp.API/FinancasApp.API.csproj
+        run: dotnet restore ./FincasApp.API/FincasApp.API.csproj
 
       - name: Compilar e publicar a aplicação
         run: |
-          dotnet publish ./FinancasApp.API/FinancasApp.API.csproj \
+          dotnet publish ./FincasApp.API/FincasApp.API.csproj \
             --configuration Release \
             --output ./output
 
@@ -53,11 +53,11 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restaurar dependências
-        run: dotnet restore ./FinancasApp.Infra.Data.Tests/FinancasApp.Infra.Data.Tests.csproj
+        run: dotnet restore ./FinApp.Infra.Data.Tests/FincasApp.Infra.Data.Tests.csproj
 
       - name: Executar testes
         run: |
-          dotnet test ./FinancasApp.Infra.Data.Tests/FinancasApp.Infra.Data.Tests.csproj \
+          dotnet test ./FinApp.Infra.Data.Tests/FincasApp.Infra.Data.Tests.csproj \
             --configuration Release \
             --logger "trx;LogFileName=results.trx"
 
