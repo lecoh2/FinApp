@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,8 @@ namespace FinApp.Infra.Data.Repositories
             await dataContext.AddAsync(entity);
             await dataContext.SaveChangesAsync();
         }
+
+     
 
         public virtual async Task DeleteAsync(TEntity entity)
         {
@@ -57,6 +60,7 @@ namespace FinApp.Infra.Data.Repositories
             };
         }
 
+     
         public virtual async Task<TEntity?> GetByIdAsync(TKey id)
         {
             return await dataContext.Set<TEntity>().FindAsync(id);
@@ -67,5 +71,15 @@ namespace FinApp.Infra.Data.Repositories
             dataContext.Update(entity);
             await dataContext.SaveChangesAsync();
         }
+        public async Task<TEntity?> GetByAsync(Expression<Func<TEntity, bool>> where)
+        {
+           return await dataContext.Set<TEntity>().FirstOrDefaultAsync(where);
+        }
+
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> where)
+        {
+           return await dataContext.Set<TEntity>().AnyAsync(where);
+        }
+
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinApp.Domain.Dtos.Response
+namespace FinApp.Domain.Dtos.Responses
 {/// <summary>
  /// Registro para saída de dados de movimentação
  /// </summary>

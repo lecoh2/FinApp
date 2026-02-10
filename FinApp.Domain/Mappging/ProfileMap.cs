@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FinApp.Domain.Dtos.Requests;
-using FinApp.Domain.Dtos.Response;
+using FinApp.Domain.Dtos.Responses;
 using FinApp.Domain.Entities;
 using System;
 using System.Collections.Generic;

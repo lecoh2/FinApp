@@ -1,5 +1,5 @@
 ﻿using FinApp.Domain.Dtos.Requests;
-using FinApp.Domain.Dtos.Response;
+using FinApp.Domain.Dtos.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
