@@ -34,7 +34,7 @@ namespace FinApp.Domain.Services
             await unitOfWork.CategoriaRepository.AddAsync(categoria);
             return mapper.Map<CategoriaResponse>(categoria);
         }
-        public async Task<CategoriaResponse> Modificar(Guid id, CategoriaRequest request)
+        public async Task<CategoriaResponse> ModificarAsync(Guid id, CategoriaRequest request)
         {
             var categoria = await unitOfWork.CategoriaRepository.GetByIdAsync(id);
             if (categoria == null)
@@ -53,21 +53,36 @@ namespace FinApp.Domain.Services
             await unitOfWork.CategoriaRepository.UpdateAsync(categoria);
             return mapper.Map<CategoriaResponse>(categoria);
         }
-
-        public Task<PageResult<CategoriaResponse>> ConsultarAsync(int pageNumber, int pageSize)
+        public async Task<CategoriaResponse> ExcluirAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var categoria = await unitOfWork.CategoriaRepository.GetByIdAsync(id);
+            if (categoria == null)
+                throw new KeyNotFoundException("Categoria não encontrada.");
+            await unitOfWork.CategoriaRepository.DeleteAsync(categoria);
+
+            return mapper.Map<CategoriaResponse>(categoria);
+        }
+        public async Task<PageResult<CategoriaResponse>> ConsultarAsync(int pageNumber, int pageSize)
+        {
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0 || pageSize > 25) pageSize = 25;
+            var pageResult = await unitOfWork.CategoriaRepository.GetAllAsync(pageNumber, pageSize);
+            var response = new PageResult<CategoriaResponse>
+            {
+                Items = mapper.Map<List<CategoriaResponse>>(pageResult.Items),
+                PageNumber = pageResult.PageNumber,
+                PageSize = pageResult.PageSize,
+                TotalCount = pageResult.TotalCount
+            };
+            return response;
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            unitOfWork.Dispose();
         }
 
-        public Task<CategoriaRequest> Excluir(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+      
 
        
         public Task<CategoriaResponse?> ObterPorIdAsync(Guid id)
@@ -85,7 +100,7 @@ namespace FinApp.Domain.Services
             throw new NotImplementedException();
         }
 
-        Task<CategoriaResponse> IBaseService<CategoriaRequest, CategoriaResponse, Guid>.Modificar(Guid id, CategoriaRequest request)
+        Task<CategoriaResponse> IBaseService<CategoriaRequest, CategoriaResponse, Guid>.ModificarAsync(Guid id, CategoriaRequest request)
         {
             throw new NotImplementedException();
         }
