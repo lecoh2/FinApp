@@ -1,4 +1,5 @@
 using FinApp.Infra.Data.Extensions;
+using FinApp.Domain.Extensions;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //Método de extesão
 builder.Services.AddEntityFramework(builder.Configuration);
-
+builder.Services.AddDomainService();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
