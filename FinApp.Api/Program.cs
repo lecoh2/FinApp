@@ -1,6 +1,7 @@
 using FinApp.Infra.Data.Extensions;
 using FinApp.Domain.Extensions;
 using Scalar.AspNetCore;
+using FinApp.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddEntityFramework(builder.Configuration);
 builder.Services.AddDomainService();
 var app = builder.Build();
+
+//Middlewares 
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
