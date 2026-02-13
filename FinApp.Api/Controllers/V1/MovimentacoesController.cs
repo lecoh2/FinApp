@@ -1,31 +1,50 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FinApp.Domain.Dtos.Requests;
+using FinApp.Domain.Dtos.Responses;
+using FinApp.Domain.Interfaces.Services;
+using FinApp.Domain.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinApp.Api.Controllers.V1
 {
     [Route("api/v1/movimentacoes")]
     [ApiController]
-    public class MovimentacoesController : ControllerBase
+    public class MovimentacoesController(IMovimentacaoService movimentacaoService) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> PostAsync()
+        [ProducesResponseType(typeof(MovimentacaoResponse),201)]
+        public async Task<IActionResult> PostAsync([FromBody] MovimentacaoRequest request)
         {
-            throw new NotImplementedException();
+            var response = await movimentacaoService.AdicionarAsync(request);
+            return StatusCode(201, response);
         }
-        [HttpPut]
-        public async Task<IActionResult> PutAsync()
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(MovimentacaoResponse) ,200)]
+        public async Task<IActionResult> PutAsync(Guid id, [FromBody] MovimentacaoRequest request)
         {
-            throw new NotImplementedException();
+            var response = await movimentacaoService.ModificarAsync(id, request);
+            return StatusCode(200, response);
         }
-        [HttpDelete]
-        public async Task<IActionResult> DeleteAsync()
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(MovimentacaoResponse), 200)]
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var response = await movimentacaoService.ExcluirAsync(id);
+            return StatusCode(200, response);
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        [ProducesResponseType(typeof(MovimentacaoResponse), 200)]
+        public async Task<IActionResult> GetAllAsync([FromBody] int pageNumber, [FromQuery]int pageSize)
         {
-            throw new NotImplementedException();
+            var response = await movimentacaoService.ConsultarAsync(pageNumber, pageSize);
+            return StatusCode(200, response);
+        }
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(MovimentacaoResponse),200)]
+        public async Task<IActionResult> GetByIdAsync(Guid id)
+        {
+            var response = await movimentacaoService.ObterPorIdAsync(id);
+            return StatusCode(200, response);
         }
 
     }

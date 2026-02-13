@@ -1,31 +1,51 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FinApp.Domain.Dtos.Requests;
+using FinApp.Domain.Dtos.Responses;
+using FinApp.Domain.Interfaces.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinApp.Api.Controllers.V1
 {
     [Route("api/v1/categorias")]
     [ApiController]
-    public class CategoriasController : ControllerBase
+    public class CategoriasController(ICategoriaService categoriaService) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> PostAsync()
+        [ProducesResponseType(typeof(CategoriaResponse), 201)]
+        public async Task<IActionResult> PostAsync([FromBody] CategoriaRequest request)
         {
-            throw new NotImplementedException();
+            var response = await categoriaService.AdicionarAsync(request);
+            return StatusCode(201, response);
+
         }
-        [HttpPut]
-        public async Task<IActionResult> PutAsync()
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(CategoriaResponse), 200)]
+        public async Task<IActionResult> PutAsync(Guid id, [FromBody] CategoriaRequest request)
         {
-            throw new NotImplementedException();
+            var response = await categoriaService.ModificarAsync(id, request);
+            return StatusCode(200, response);
         }
-        [HttpDelete]
-        public async Task<IActionResult> DeleteAsync()
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(CategoriaResponse), 200)]
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var response = await categoriaService.ExcluirAsync(id);
+            return StatusCode(200, response);
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        [ProducesResponseType(typeof(CategoriaResponse), 200)]
+        public async Task<IActionResult> GetAllAsync([FromBody] int pageNumber, [FromQuery] int pageSize)
         {
-            throw new NotImplementedException();
+            var response = await categoriaService.ConsultarAsync(pageNumber, pageSize);
+            return StatusCode(200, response);
+        }
+
+        [HttpGet("id")]
+        [ProducesResponseType(typeof(CategoriaResponse),200)]
+        public async Task<IActionResult> GetByIdAsync(Guid id)
+        {
+            var response = await categoriaService.ObterPorIdAsync(id);
+            return StatusCode(200);
         }
     }
 }
