@@ -2,6 +2,7 @@
 using FinApp.Domain.Dtos.Requests;
 using FinApp.Domain.Dtos.Responses;
 using FinApp.Domain.Entities;
+using FinApp.Domain.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,23 @@ namespace FinApp.Domain.Mappging
             CreateMap<Categoria, CategoriaResponse>();
             #endregion
             #region Movimentacao
-            CreateMap<MovimentacaoRequest, Movimentacao>();
-            CreateMap<Movimentacao, MovimentacaoResponse>();
+            CreateMap<MovimentacaoRequest, Movimentacao>()
+                .ForMember(dest => dest.Data,
+                opt => opt.MapFrom(src => DateOnly.Parse(src.Data)))
+                .ForMember(dest => dest.Tipo,
+                opt => opt.MapFrom(src => (TipoMovimentacao)src.Tipo));
+
+
+            CreateMap<Movimentacao, MovimentacaoResponse>()
+                .ForMember(dest => dest.Data,
+                opt => opt.MapFrom(src => src.Data.HasValue
+                ? src.Data.Value.ToString("yyyy-MM-dd")
+                : string.Empty))
+                .ForMember(dest => dest.Tipo,
+                opt => opt.MapFrom(src => src.Tipo.HasValue
+                                   ? (int)src.Tipo.Value
+                                   : 0));
+
             #endregion
         }
     }

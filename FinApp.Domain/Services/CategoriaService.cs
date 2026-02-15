@@ -85,29 +85,13 @@ namespace FinApp.Domain.Services
       
 
        
-        public Task<CategoriaResponse?> ObterPorIdAsync(Guid id)
+        public async Task<CategoriaResponse?> ObterPorIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var categoria = await unitOfWork.CategoriaRepository.GetByIdAsync(id);
+            if (categoria == null)
+                return null;
+            return mapper.Map<CategoriaResponse>(categoria);
         }
-
-        Task<CategoriaResponse> IBaseService<CategoriaRequest, CategoriaResponse, Guid>.AdicionarAsync(CategoriaRequest request)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<PageResult<CategoriaResponse>> IBaseService<CategoriaRequest, CategoriaResponse, Guid>.ConsultarAsync(int pageNumber, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<CategoriaResponse> IBaseService<CategoriaRequest, CategoriaResponse, Guid>.ModificarAsync(Guid id, CategoriaRequest request)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<CategoriaResponse?> IBaseService<CategoriaRequest, CategoriaResponse, Guid>.ObterPorIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+    
     }
 }

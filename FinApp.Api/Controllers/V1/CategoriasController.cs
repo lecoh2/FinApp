@@ -34,7 +34,9 @@ namespace FinApp.Api.Controllers.V1
         }
         [HttpGet]
         [ProducesResponseType(typeof(CategoriaResponse), 200)]
-        public async Task<IActionResult> GetAllAsync([FromBody] int pageNumber, [FromQuery] int pageSize)
+        public async Task<IActionResult> GetAllAsync(
+            [FromBody] int pageNumber,
+            [FromQuery] int pageSize)
         {
             var response = await categoriaService.ConsultarAsync(pageNumber, pageSize);
             return StatusCode(200, response);
