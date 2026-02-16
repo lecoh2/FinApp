@@ -34,7 +34,8 @@ namespace FinApp.Api.Controllers.V1
         }
         [HttpGet]
         [ProducesResponseType(typeof(MovimentacaoResponse), 200)]
-        public async Task<IActionResult> GetAllAsync([FromBody] int pageNumber, [FromQuery]int pageSize)
+        public async Task<IActionResult> GetAllAsync([FromQuery] int pageNumber=1,
+            [FromQuery]int pageSize = 10)
         {
             var response = await movimentacaoService.ConsultarAsync(pageNumber, pageSize);
             return StatusCode(200, response);

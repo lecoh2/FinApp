@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinApp.Infra.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20260215123348_Initial")]
+    [Migration("20260216183007_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -34,8 +34,9 @@ namespace FinApp.Infra.Data.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(250)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(250)")
                         .HasColumnName("NOME");
 
                     b.HasKey("Id");
@@ -63,8 +64,9 @@ namespace FinApp.Infra.Data.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(250)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(250)")
                         .HasColumnName("NOME");
 
                     b.Property<int?>("Tipo")

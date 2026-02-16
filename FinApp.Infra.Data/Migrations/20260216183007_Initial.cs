@@ -16,7 +16,7 @@ namespace FinApp.Infra.Data.Migrations
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NOME = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    NOME = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,7 +28,7 @@ namespace FinApp.Infra.Data.Migrations
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NOME = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    NOME = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: false),
                     DATA = table.Column<DateOnly>(type: "date", nullable: true),
                     VALOR = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     CATEGORIA_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),

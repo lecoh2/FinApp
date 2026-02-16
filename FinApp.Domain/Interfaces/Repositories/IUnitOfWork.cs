@@ -9,13 +9,13 @@ namespace FinApp.Domain.Interfaces.Repositories
     public interface IUnitOfWork : IDisposable
     {
         #region Operações de transação
-        void BeginTransaction();
-        void Commit();
-        void Rollback();
+        Task BeginTransaction();
+        Task CommitAsync();
+        Task RollbackAsync();
         #endregion
         #region Acesso aos repositórios 
-        public ICategoriaRepository CategoriaRepository { get; }
-        public IMovimentacaoRepository MovimentacaoRepository { get; }
+        ICategoriaRepository CategoriaRepository { get; }
+        IMovimentacaoRepository MovimentacaoRepository { get; }
         #endregion
     }
 }

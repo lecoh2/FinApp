@@ -11,33 +11,33 @@ using System.Threading.Tasks;
 
 namespace FinApp.Infra.Data.Repositories
 {
-    public abstract class BaseRepository<TEntity, TKey>
-(DataContext dataContext) : IBaseRepository<TEntity, TKey>
+    public abstract class BaseRepository<TEntity, TKey> 
+: IBaseRepository<TEntity, TKey>, IDisposable
         where TEntity : class
     {
-        //private readonly DataContext _dataContext;
+        private readonly DataContext _dataContext;
 
-        //protected BaseRepository(DataContext dataContext)
-        //{
-        //    _dataContext = dataContext;
-        //}
+        protected BaseRepository(DataContext dataContext)
+        {
+            _dataContext = dataContext;
+        }
         public virtual async Task AddAsync(TEntity entity)
         {
-            await dataContext.AddAsync(entity);
-            await dataContext.SaveChangesAsync();
+            await _dataContext.AddAsync(entity);
+            await _dataContext.SaveChangesAsync();
         }
 
      
 
         public virtual async Task DeleteAsync(TEntity entity)
         {
-            dataContext.Remove(entity);
-            await dataContext.SaveChangesAsync();
+            _dataContext.Remove(entity);
+            await _dataContext.SaveChangesAsync();
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await dataContext.Set<TEntity>().ToListAsync();
+            return await _dataContext.Set<TEntity>().ToListAsync();
 
         }   
         public virtual async Task<PageResult<TEntity>> GetAllAsync(int pageNumber, int pageSize)
@@ -45,7 +45,7 @@ namespace FinApp.Infra.Data.Repositories
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
 
-            var query = dataContext.Set<TEntity>();
+            var query = _dataContext.Set<TEntity>();
             var totalCount = await query.CountAsync();
             var items = await query
                          .Skip((pageNumber - 1) * pageSize)
@@ -63,23 +63,27 @@ namespace FinApp.Infra.Data.Repositories
      
         public virtual async Task<TEntity?> GetByIdAsync(TKey id)
         {
-            return await dataContext.Set<TEntity>().FindAsync(id);
+            return await _dataContext.Set<TEntity>().FindAsync(id);
         }
 
         public virtual async Task UpdateAsync(TEntity entity)
         {
-            dataContext.Update(entity);
-            await dataContext.SaveChangesAsync();
+            _dataContext.Update(entity);
+            await _dataContext.SaveChangesAsync();
         }
         public async Task<TEntity?> GetByAsync(Expression<Func<TEntity, bool>> where)
         {
-           return await dataContext.Set<TEntity>().FirstOrDefaultAsync(where);
+           return await _dataContext.Set<TEntity>().FirstOrDefaultAsync(where);
         }
 
         public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> where)
         {
-           return await dataContext.Set<TEntity>().AnyAsync(where);
+           return await _dataContext.Set<TEntity>().AnyAsync(where);
         }
 
+        public void Dispose()
+        {
+            _dataContext.Dispose();
+        }
     }
 }

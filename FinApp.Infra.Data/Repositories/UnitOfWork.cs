@@ -10,39 +10,65 @@ using System.Transactions;
 
 namespace FinApp.Infra.Data.Repositories
 {
-    public class UnitOfWork(DataContext dataContext) : IUnitOfWork
+    /// <summary> 
+    /// Unidade de trabalho para o EntityFramework 
+    /// </summary>
+    public class UnitOfWork : IUnitOfWork//(DataContext dataContext) : IUnitOfWork
     {
-        private IDbContextTransaction? transaction;
+        //atributo para armazenar o contexto 
+        private readonly DataContext _dataContext;
 
-        public void BeginTransaction()
+        //construtor para injeção de dependência 
+        public UnitOfWork(DataContext dataContext)
+        {
+            _dataContext = dataContext;
+        }
+        #region Repositórios
+        public ICategoriaRepository CategoriaRepository => 
+            new CategoriaRepository(_dataContext);
+
+        public IMovimentacaoRepository MovimentacaoRepository => 
+            new MovimentacaoRepository(_dataContext);
+        #endregion
+        //construtor para injeção de dependência 
+        private IDbContextTransaction? _transaction;
+        #region Transações
+        public async Task BeginTransaction()
         {
             ///implementarção
-            if (transaction != null)
-                return;
-            transaction = dataContext.Database.BeginTransaction();
+            if (_transaction == null)
+                _transaction = await _dataContext.Database
+                    .BeginTransactionAsync();
         }
 
-        public void Commit()
+        public async Task CommitAsync()
         {
-            if (transaction != null)
-                transaction.Commit();
-        }       
-
-        public void Rollback()
-        {
-            if (transaction != null)
-                transaction.Rollback();
+            try
+            {
+                await _dataContext.SaveChangesAsync();
+                await _transaction.CommitAsync();
+            }
+            catch
+            {
+                await _transaction.RollbackAsync();
+                throw;
+            }
         }
-        public ICategoriaRepository CategoriaRepository => new CategoriaRepository(dataContext);
 
-        public IMovimentacaoRepository MovimentacaoRepository => new MovimentacaoRepository(dataContext);
+        public async Task RollbackAsync()
+        {
+            if (_transaction != null)
+                await _transaction.RollbackAsync();
+        }
+        #endregion
         public void Dispose()
-        {
-            if (transaction != null)
-                transaction.Dispose();
 
-            dataContext.Dispose();
+        {
+            _dataContext.Dispose();
+            if (_transaction != null)
+                _transaction.Dispose();
 
         }
+       
     }
 }

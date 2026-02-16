@@ -31,6 +31,7 @@ namespace FinApp.Infra.Data.Extensions
 
             //Injeção de dependência do UnitOfWork 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+
             return services;
         }
     }
