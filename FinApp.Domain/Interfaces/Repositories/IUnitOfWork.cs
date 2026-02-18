@@ -16,6 +16,7 @@ namespace FinApp.Domain.Interfaces.Repositories
         #region Acesso aos repositórios 
         ICategoriaRepository CategoriaRepository { get; }
         IMovimentacaoRepository MovimentacaoRepository { get; }
+        IOutboxMessageRepository OutboxMessageRepository { get; }
         #endregion
     }
 }

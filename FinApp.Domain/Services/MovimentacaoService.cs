@@ -4,6 +4,7 @@ using FinApp.Domain.Dtos.Responses;
 using FinApp.Domain.Entities;
 using FinApp.Domain.Interfaces.Repositories;
 using FinApp.Domain.Interfaces.Services;
+using FinApp.Domain.Messages.Models;
 using FinApp.Domain.Utils;
 using FinApp.Domain.Validators;
 using FluentValidation;
@@ -11,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FinApp.Domain.Services
@@ -34,9 +36,25 @@ namespace FinApp.Domain.Services
 
             if (!result.IsValid)
                 throw new ValidationException(result.Errors);
+            try
+            {
+                await unitOfWork.MovimentacaoRepository.AddAsync(movimentacao);
 
-            await unitOfWork.MovimentacaoRepository.AddAsync(movimentacao);
-            return mapper.Map<MovimentacaoResponse>(movimentacao);
+                await unitOfWork.OutboxMessageRepository.AddAsync(new OutboxMessage
+                {
+                    Type = nameof(Movimentacao),
+                    Payload = JsonSerializer.Serialize(movimentacao)
+                });
+                unitOfWork.CommitAsync();
+            }
+            catch (Exception e)
+            {
+                unitOfWork.RollbackAsync();
+                throw new Exception(e.Message);
+            }
+            return mapper.Map<MovimentacaoResponse>
+                (await unitOfWork.MovimentacaoRepository
+                .GetByIdAsync(movimentacao.Id));
         }
 
         public async Task<MovimentacaoResponse> ModificarAsync(Guid id, MovimentacaoRequest request)

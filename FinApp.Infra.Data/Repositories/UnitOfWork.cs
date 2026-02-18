@@ -16,19 +16,22 @@ namespace FinApp.Infra.Data.Repositories
     public class UnitOfWork : IUnitOfWork//(DataContext dataContext) : IUnitOfWork
     {
         //atributo para armazenar o contexto 
-        private readonly DataContext _dataContext;
+        private readonly DataContext dataContext;
 
         //construtor para injeção de dependência 
-        public UnitOfWork(DataContext dataContext)
+        public UnitOfWork(DataContext _dataContext)
         {
-            _dataContext = dataContext;
+            dataContext = _dataContext;
         }
         #region Repositórios
         public ICategoriaRepository CategoriaRepository => 
-            new CategoriaRepository(_dataContext);
+            new CategoriaRepository(dataContext);
 
         public IMovimentacaoRepository MovimentacaoRepository => 
-            new MovimentacaoRepository(_dataContext);
+            new MovimentacaoRepository(dataContext);
+
+        public IOutboxMessageRepository OutboxMessageRepository =>
+            new OutboxMessageRepository(dataContext);
         #endregion
         //construtor para injeção de dependência 
         private IDbContextTransaction? _transaction;
@@ -37,7 +40,7 @@ namespace FinApp.Infra.Data.Repositories
         {
             ///implementarção
             if (_transaction == null)
-                _transaction = await _dataContext.Database
+                _transaction = await dataContext.Database
                     .BeginTransactionAsync();
         }
 
@@ -45,7 +48,7 @@ namespace FinApp.Infra.Data.Repositories
         {
             try
             {
-                await _dataContext.SaveChangesAsync();
+                await dataContext.SaveChangesAsync();
                 await _transaction.CommitAsync();
             }
             catch
@@ -64,7 +67,7 @@ namespace FinApp.Infra.Data.Repositories
         public void Dispose()
 
         {
-            _dataContext.Dispose();
+            dataContext.Dispose();
             if (_transaction != null)
                 _transaction.Dispose();
 
